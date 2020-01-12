@@ -1,0 +1,35 @@
+		@import url('https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap');
+
+		.bold {
+			font-weight: bold;
+		}
+				
+		.bg-image {
+			background-image: url('https://ww.namu.la/s/a63f1d36b1d42e0ed158ff7abcea682a05b603852b6f0c430dcbca12e7b93fcfbfc0d9dc4b8c2d04618ad1ebda8704b1b3adfa70febb86c691d5a006fb95af7f12b73ab8030023a283d3984aa99a1ed6992841afc56e93360ab9eb4c1ed6a12b');
+			width:500px;
+			height:400px;
+			background-size: contain;
+			border-radius:10px;
+		}
+
+		.bg-text {
+			font-family: 'Do Hyeon', sans-serif;
+			font-color:white;
+			display: flex;
+			justify-content: center;
+			align-items: :center;
+		}
+
+		.bg-text2 {
+			margin-top:10px;
+		}
+
+		.bg-login {
+			margin-top:30px;
+
+		}
+
+		.center {
+			width : 500px;
+			margin : 20px auto;
+		}

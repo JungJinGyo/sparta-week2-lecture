@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 여기는 css를 위한 공 -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    	function makeSomeCard() {
+            let cardHtml = '<div class="card" style="width: 18rem;">\
+      <img class="card-img-top" src="https://www.fodors.com/wp-content/uploads/2018/10/4_UltimateRome_PiazzaNavona-975x650.jpg" alt="Card image cap">\
+      <div class="card-body">\
+        <h5 class="card-title"></h5>\
+        <p id="card-text"></p>\
+        <p id="card-text-comment"></p>\
+        <p id="card-text-final"></p>\
+      </div>\
+    </div>\
+  </div>';
+
+            // card-text 부분에 들어갈 것
+            // Region : 서남권
+            // PM10 : 얼마
+            // PM25 : 얼마
+            $.ajax({
+              type: "GET",
+              url: "http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99",
+              data: {},
+              success: function(response) {
+                let mise = response["RealtimeCityAir"]["row"];
+                for (let i = 0; i < mise.length; i++) {
+                    console.log(mise[i]);
+                    let newCard = $($.parseHTML(cardHtml)); // html로 변경
+                    newCard.find('h5.card-title').text(mise[i]['MSRSTE_NM']);
+                    newCard.find('p#card-text').text("지역 :" + " " + mise[i]['MSRRGN_NM']);
+                    newCard.find('p#card-text-comment').text("지수 : " + mise[i]['IDEX_NM']);
+
+                    if(mise[i]['IDEX_NM']=="좋음")
+                    {
+                        $('p#card-text-comment').css("color","green");
+                    }
+                    else if(mise[i]['IDEX_NM']=="보통")
+                    {
+                        $('p#card-text-comment').css("color","red");
+                    }
+                    else //나쁨
+                    {
+                        $('p#card-text-comment').css("color","green");
+                    }
+
+                    newCard.find('p#card-text-final').text("PM25 :" + " " + mise[i]['PM25']);
+                    $("div.card-columns").append(newCard);
+                }
+              }
+          });
+        }
+    </script>
+    <style type="text/css">
+        .wrap {
+            width: 900px;
+            margin: auto;
+        }
+        body {
+            font-family: 'Stylish', sans-serif;
+        }
+        .color-blue {
+            color: blue;
+        }
+        .posting {
+            width: 50%;
+            margin: 10px auto 20px auto;
+            border: 1px solid black;
+            padding: 20px 20px 20px 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="jumbotron">
+            <h1 class="display-4">Hello, world!</h1>
+            <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+            <hr class="my-4">
+            <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+            <button onclick="makeSomeCard()" class="btn btn-primary btn-lg">Learn more</button>
+        </div>
+        <div class="posting" id="postingBox" style="display:none;">
+            <form>
+                <div class="form-group">
+                    <label for="inputArticle">아티클 URL</label>
+                    <input type="text" class="form-control" id="inputArticle" aria-describedby="emailHelp">
+                </div>
+                <div class="form-group">
+                    <label for="inputComment">간단 코멘트</label>
+                    <textarea class="form-control" id="inputComment" aria-describedby="emailHelp"></textarea>
+                </div>
+                <button onclick="hey2('안녕')" type="submit" class="btn btn-primary">기사저장</button>
+            </form>
+        </div>
+        <div class="card-columns">
+
+        </div>
+    </div>
+</body>
+</html>
